@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Interactive Quiz</h1>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="question-counter">
+                <span id="current-question">1</span> / <span id="total-questions">5</span>
+            </div>
+        </div>
+
+        <div class="quiz-content">
+            <div class="question-section">
+                <h2 id="question-text">Question will appear here</h2>
+            </div>
+
+            <div class="answers-section">
+                <div class="answer-option" id="option-a">
+                    <input type="radio" name="answer" id="a" value="a">
+                    <label for="a" id="label-a">Answer A</label>
+                </div>
+                <div class="answer-option" id="option-b">
+                    <input type="radio" name="answer" id="b" value="b">
+                    <label for="b" id="label-b">Answer B</label>
+                </div>
+                <div class="answer-option" id="option-c">
+                    <input type="radio" name="answer" id="c" value="c">
+                    <label for="c" id="label-c">Answer C</label>
+                </div>
+                <div class="answer-option" id="option-d">
+                    <input type="radio" name="answer" id="d" value="d">
+                    <label for="d" id="label-d">Answer D</label>
+                </div>
+            </div>
+
+            <div class="button-section">
+                <button id="submit-btn" class="btn">Submit Answer</button>
+                <button id="next-btn" class="btn" style="display: none;">Next Question</button>
+            </div>
+        </div>
+
+        <div class="result-section" id="result-section" style="display: none;">
+            <h2>Quiz Complete!</h2>
+            <div class="score-display">
+                <h3>Your Score: <span id="final-score">0</span> / <span id="total-score">5</span></h3>
+                <div class="score-percentage" id="score-percentage">0%</div>
+            </div>
+            <div class="score-message" id="score-message"></div>
+            <button id="restart-btn" class="btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
