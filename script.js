@@ -57,6 +57,7 @@ const scoreMessageEl = document.getElementById('score-message');
 let currentQuiz = 0;
 let score = 0;
 let selectedAnswer = null;
+let userAnswers = []; // Track user's answers
 
 loadQuiz();
 
@@ -100,7 +101,9 @@ function loadQuiz() {
     b_text.innerText = currentQuizData.b;
     c_text.innerText = currentQuizData.c;
     d_text.innerText = currentQuizData.d;
-    progressEl.style.width = `${(currentQuiz / quizData.length) * 100}%`;
+    
+    // Fix progress bar - should be complete when on last question
+    progressEl.style.width = `${((currentQuiz + 1) / quizData.length) * 100}%`;
     currentQuestionEl.textContent = currentQuiz + 1;
     
     // Disable submit button until answer is selected
@@ -109,6 +112,9 @@ function loadQuiz() {
     
     // Add click listeners to answer options
     addAnswerOptionListeners();
+    
+    // Update button visibility for current question
+    updateButtonVisibility();
 }
 
 function deselectAnswers() {
@@ -128,10 +134,14 @@ function checkAnswer() {
         return;
     }
 
+    // Store user's answer
+    userAnswers[currentQuiz] = selected.value;
+
     const answerOptionEl = document.getElementById(`option-${selected.value}`);
     const correctOptionEl = document.getElementById(`option-${quizData[currentQuiz].correct}`);
     
-    if (selected.id === quizData[currentQuiz].correct) {
+    // Fix scoring bug - compare values, not IDs
+    if (selected.value === quizData[currentQuiz].correct) {
         score++;
         answerOptionEl.classList.add('correct');
     } else {
@@ -163,9 +173,30 @@ function loadNextQuiz() {
 }
 
 function updateButtonVisibility() {
-    document.getElementById('submit-btn').style.display = currentQuiz < quizData.length ? 'block' : 'none';
-    document.getElementById('next-btn').style.display = currentQuiz < quizData.length - 1 ? 'block' : 'none';
-    document.getElementById('restart-btn').style.display = currentQuiz === quizData.length ? 'block' : 'none';
+    const submitBtn = document.getElementById('submit-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    
+    // Hide all buttons first
+    submitBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+    restartBtn.style.display = 'none';
+    
+    // Show appropriate button based on current state
+    if (currentQuiz < quizData.length) {
+        // If answer hasn't been submitted yet, show submit button
+        if (!userAnswers[currentQuiz]) {
+            submitBtn.style.display = 'block';
+        } else {
+            // Answer has been submitted
+            if (currentQuiz < quizData.length - 1) {
+                nextBtn.style.display = 'block';
+            }
+            // For last question, final score will be shown automatically
+        }
+    } else {
+        restartBtn.style.display = 'block';
+    }
 }
 
 function showFinalScore() {
@@ -186,12 +217,16 @@ function showFinalScore() {
         scoreMessageEl.textContent = "Keep learning! Practice makes perfect!";
         scoreMessageEl.classList.add('average');
     }
+    
+    // Display review section
+    displayReview();
 }
 
 function restartQuiz() {
     score = 0;
     currentQuiz = 0;
     selectedAnswer = null;
+    userAnswers = []; // Reset user answers
     document.querySelector('.quiz-content').style.display = 'block';
     document.getElementById('result-section').style.display = 'none';
     scoreMessageEl.classList.remove('excellent', 'good', 'average');
@@ -200,8 +235,62 @@ function restartQuiz() {
     const existingConfetti = document.querySelectorAll('.confetti');
     existingConfetti.forEach(confetti => confetti.remove());
     
+    // Clear review section
+    document.getElementById('questions-review').innerHTML = '';
+    
     loadQuiz();
     updateButtonVisibility();
+}
+
+// Display review section with all questions and answers
+function displayReview() {
+    const reviewContainer = document.getElementById('questions-review');
+    reviewContainer.innerHTML = '';
+    
+    quizData.forEach((question, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'review-question';
+        
+        const questionTitle = document.createElement('h4');
+        questionTitle.textContent = `Question ${index + 1}: ${question.question}`;
+        questionDiv.appendChild(questionTitle);
+        
+        const answersDiv = document.createElement('div');
+        answersDiv.className = 'review-answers';
+        
+        const userAnswer = userAnswers[index];
+        const correctAnswer = question.correct;
+        
+        // Display all options
+        ['a', 'b', 'c', 'd'].forEach(option => {
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'review-answer';
+            
+            // Determine the class based on user's answer and correct answer
+            if (option === userAnswer && option === correctAnswer) {
+                answerDiv.classList.add('user-correct');
+            } else if (option === userAnswer && option !== correctAnswer) {
+                answerDiv.classList.add('user-incorrect');
+            } else if (option === correctAnswer) {
+                answerDiv.classList.add('correct-answer');
+            }
+            
+            const answerLabel = document.createElement('span');
+            answerLabel.className = 'answer-label';
+            answerLabel.textContent = option.toUpperCase() + ')';
+            
+            const answerText = document.createElement('span');
+            answerText.className = 'answer-text';
+            answerText.textContent = question[option];
+            
+            answerDiv.appendChild(answerLabel);
+            answerDiv.appendChild(answerText);
+            answersDiv.appendChild(answerDiv);
+        });
+        
+        questionDiv.appendChild(answersDiv);
+        reviewContainer.appendChild(questionDiv);
+    });
 }
 
 // Confetti effect function

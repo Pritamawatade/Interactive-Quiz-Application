@@ -240,6 +240,138 @@ body {
     border: 2px solid #dc3545;
 }
 
+/* Review Section Styles */
+.review-section {
+    margin: 30px 0;
+    text-align: left;
+}
+
+.review-section h3 {
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 5px solid #667eea;
+}
+
+.review-question {
+    background: #fff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.review-question h4 {
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.review-answers {
+    display: grid;
+    gap: 10px;
+}
+
+.review-answer {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    background: #f8f9fa;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.review-answer.user-answer {
+    border-color: #007bff;
+    background: #e3f2fd;
+}
+
+.review-answer.user-answer::before {
+    content: "👤 Your Answer";
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background: #007bff;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.review-answer.correct-answer {
+    border-color: #28a745;
+    background: #d4edda;
+}
+
+.review-answer.correct-answer::before {
+    content: "✅ Correct Answer";
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background: #28a745;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.review-answer.user-correct {
+    border-color: #28a745;
+    background: #d4edda;
+}
+
+.review-answer.user-correct::before {
+    content: "✅ Your Correct Answer";
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background: #28a745;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.review-answer.user-incorrect {
+    border-color: #dc3545;
+    background: #f8d7da;
+}
+
+.review-answer.user-incorrect::before {
+    content: "❌ Your Answer";
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background: #dc3545;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.answer-label {
+    font-weight: bold;
+    margin-right: 10px;
+    color: #666;
+}
+
+.answer-text {
+    color: #333;
+    font-size: 1.1em;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .quiz-container {
